@@ -179,6 +179,9 @@ prova prima/dopo.
 
 ## 7. Lavorare con Claude Code
 
+> Usi ChatGPT o Claude sul sito? Incolla `ISTRUZIONI_PER_LA_IA.md` nelle istruzioni del tuo progetto: così la tua IA
+> conosce il robot e le regole della squadra.
+
 1. Ognuno ha il **suo account Claude** (piano Pro, che comprende Claude Code): mai l'account di un altro.
 2. Su claude.ai **collega il tuo account GitHub** (lo stesso con cui sei collaboratore).
 3. Apri **Claude Code**, scegli la repository `Giooooonni93/Robocassano27`. Claude legge da solo `CLAUDE.md` e conosce
