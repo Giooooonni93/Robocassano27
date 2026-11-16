@@ -11,6 +11,7 @@ cartella. Le copie di prova delle versioni finiscono in `copie_di_prova/` (si po
 | `prova_uscita.py` | porta d'uscita con il robot spostato (-12..+12 cm) | 9/9 |
 | `prova_uscita_angolo.py` | uscita vista seguendo il muro, davanti al muro accanto alla porta (x 222-234) | 4/4 |
 | `prova_altalena.py` | riconoscimento dell'altalena con uno stoppie finto | "PROBABILE ALTALENA SUPERATA", riparte |
+| `prova_verde_discesa.py` | (13/11, FIX 115) incrocio a + coi verdi in diagonale in fondo a una discesa di 21 gradi; misura dove sono le ruote quando il robot comincia a girare | V48: 17,5 cm prima del centro; V50: 0-0,5 cm, svolta a sinistra |
 | `analizza_scatola_nera.py` | eventi di una scatola nera vera, o i campioni tra due istanti | – |
 | `terminale_nuovo.py` | **moviola**: rivede una scatola nera vera nel terminale con la cabina di pilotaggio della V42 (camere, cronometro, fasi). Finestra di almeno 100 x 38 | – |
 
