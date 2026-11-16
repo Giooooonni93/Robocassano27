@@ -12,11 +12,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V50**; la V49 è prenotata da Gioele, issue #34).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V51**; la V49 è prenotata da Gioele, issue #34).
    Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 116**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 119**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -43,7 +43,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   una pull request) → un'issue per pezzo (es. Battista l'altalena, Gioele l'uscita) → ognuno la sua versione, analisi della
   scatola nera, simulatore, pull request con prima/dopo → il prof controlla e unisce → chi arriva secondo si aggiorna → la
   versione nuova va sul robot. Dettagli per gli studenti in `COME_LAVORARE.md`.
-- Il repository contiene le **ultime versioni** del codice (V39-V48 come riferimento, V50), i simulatori V31 e V32, gli strumenti
+- Il repository contiene le **ultime versioni** del codice (V39-V50 come riferimento, V51), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
 - **Come nelle aziende (dal 12/11, dopo V46 e V47 partite tutte e due dalla V45 e unite senza aggiornarsi)**: sezione 3bis di
@@ -107,7 +107,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V50, impronta 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V51, impronta 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -219,6 +219,14 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   Prove: `Strumenti_prove_Claude/prova_verde_discesa.py` (V48 gira con le ruote 17,5 cm prima dell'incrocio, V50 0-0,5 cm);
   FIX 116 sui fotogrammi veri (fessure 500-1170 pixel neri -> 0-255). Altre 9 piste come la V48 (rcj2026 più veloce).
   `scuola_nuova`: più LoP, ma per l'ingresso del tunnel (vedi "Aperto").
+- **V51** (16/11, issue #43) FIX 117: **niente salto all'arena**: uno switch "spento" ferma i motori ma conta solo dopo
+  `SWITCH_CONFERMA_S` (0,5 s, `SwitchConfermatoSpento`, anche in `ArenaAI`); il ciclo principale va ad `ArenaAI` solo se il
+  seguilinea è finito con l'ingresso (`ArenaEntrata`) e a `TrovaUscitaArena` solo con `ArenaCompleta` (interruttore
+  `SWITCH_CONFERMA`). FIX 118: verde in **salita** con `SvoltaInDiscesa` (`VERDE_SALITA_AVANZA`) e
+  `DistanzaLineaTrasversale(img, beccheggio)` corretta col beccheggio (senza: 13 cm prima, 0 arrivi su 6). FIX 119: pallina
+  tagliata dal bordo dell'immagine (`WebCam.UltimaPallina`) → si gira e la riguarda, max 3 volte (`PALLINA_BORDO_RIPROVA`).
+  Prove nuove: `prova_switch_disturbo.py`, `prova_pallina_bordo.py`, `prova_verde_discesa.py ... salita`. Batteria = V50,
+  `scuola_nuova` seme 1 migliora.
 
 ## Com'è andata sul robot vero
 - 12/11 10:09 (**V43**): percorso completo, 3 vittime, uscita in 10 s, altalena, linea rossa a 547 s; **8 LoP**, una sola scatola nera
@@ -240,6 +248,12 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   robot andava dritto (4 su 4, → FIX 115); nel tunnel (vuoto di 15,5 cm) alla fine del nastro ha inseguito le fessure tra le
   piastrelle ed è girato di 105 gradi (→ FIX 116); ingresso dell'arena: falso ingresso contro il muro (40 s) e 4 "non avanzo";
   altalena -60 gradi. La luce non c'entra: pavimento sempre ben sopra la soglia (mediana V 186).
+- 16/11 10:40 (**V50**, soglia 112, VISTA OK): all'inizio lo switch è rimasto spento ~4 minuti; riacceso, il programma è
+  **saltato all'arena in mezzo alla pista** (→ FIX 117: era il "non segue la linea"). Poi arrivo a 786 s, 9 LoP, palline 3/3
+  (la prima mancata una volta: tagliata dal bordo, → FIX 119). FIX 115 ok ("Verde in discesa", svolta di 95 gradi).
+  Rotonda in cima alla rampa: verdi visti in salita (+17/+21), fuori pista e ramo sbagliato (→ FIX 118). **Giroscopio
+  bloccato** due volte (231 e 418 s, legge sempre (-2,-2,0)): hardware da controllare (BNO055, cavi I2C). Uscita lenta (87 s),
+  altalena -64 gradi con 2 LoP.
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
@@ -249,6 +263,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   Se il seguilinea va peggio della V47: `CAM_LINEA_AUTOTARATURA = False`.
 - **Due palline vicine** viste come una sola (scatola nera V46 17:52): riquadro largo → puntare a una pallina sola. Versione nuova.
 - **Gioele: issue #34 è la V49**: se la V50 viene unita prima, parte dalla V50 e prende il numero dopo (chi arriva secondo si aggiorna).
+- **V51 sul robot**: impronta `097307d16e30102c`. Guardare: "Switch spento solo per ..." (disturbi ignorati), la rotonda in cima
+  alla rampa ("Verde in salita: avanzo sull'incrocio"), "Pallina tagliata dal bordo". Se peggio: gli interruttori.
+- **Giroscopio BNO055 che si blocca** (16/11): da controllare l'hardware (Gabriel, Antonio).
 - **V50 sul robot**: impronta `2a38890a5a015989`. Guardare l'incrocio coi due verdi in fondo alla discesa ("Verde in discesa:
   avanzo sull'incrocio") e il tunnel. Se va peggio: `VERDE_DISCESA_AVANZA = False` / `GAP_SEGUI_FILTRO_RIGHE = False`.
 - **Simulatore, ingresso del tunnel in `scuola_nuova`**: la curva prima del tunnel a volte viene presa per "incrocio senza
