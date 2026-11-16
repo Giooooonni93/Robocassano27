@@ -12,11 +12,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V52**; la V49 è prenotata da Gioele, issue #34).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V53**; la V49 è prenotata da Gioele, issue #34).
    Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 123**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 126**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -43,7 +43,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   una pull request) → un'issue per pezzo (es. Battista l'altalena, Gioele l'uscita) → ognuno la sua versione, analisi della
   scatola nera, simulatore, pull request con prima/dopo → il prof controlla e unisce → chi arriva secondo si aggiorna → la
   versione nuova va sul robot. Dettagli per gli studenti in `COME_LAVORARE.md`.
-- Il repository contiene le **ultime versioni** del codice (V39-V51 come riferimento, V52), i simulatori V31 e V32, gli strumenti
+- Il repository contiene le **ultime versioni** del codice (V39-V52 come riferimento, V53), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
 - **Come nelle aziende (dal 12/11, dopo V46 e V47 partite tutte e due dalla V45 e unite senza aggiornarsi)**: sezione 3bis di
@@ -107,7 +107,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V52, impronta 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V53, impronta dc7b78167084f7c3; V52: 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -233,6 +233,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   file dell'attesa cancellato (< `SCATOLA_MIN_CAMPIONI_RUN` 20). FIX 123: **avviso della luce** (`_controlla_luce` in
   ViennaMonitor: bianco della camera linea V75 >= 232 bruciata / < 120 scura, lux arena < 500 / > 25000; evento "LUCE: ...",
   campo `luce`; `LUCE_AVVISI`).
+- **V53** (16/11, issue #47) FIX 124: rotonda in cima alla rampa, `VERDE_PENDENZA_RISERVA_S` 1,5 s (prima 0,5) in `SvoltaInDiscesa`
+  se la linea trasversale non si misura (girava 15 cm prima). FIX 125: **robot sulle ruote davanti** (`RaddrizzaSulleRuote`, in
+  `ControllaAltalena` e nel seguilinea): beccheggio < -35 e laser davanti < 10 cm per 0,4 s → colpetto di retromarcia a 100 per
+  0,2 s, attesa 0,5 s, ricontrolla, max 4 (`IMPENNATA_*`). FIX 126: niente controllo della luce col beccheggio oltre 15 gradi.
+  Prove: `prova_ruote_davanti.py` (V52 fuori campo, V53 si raddrizza), `prova_rotonda.py` (esce a destra 6 su 6). Batteria = V52.
 
 ## Com'è andata sul robot vero
 - 12/11 10:09 (**V43**): percorso completo, 3 vittime, uscita in 10 s, altalena, linea rossa a 547 s; **8 LoP**, una sola scatola nera
@@ -264,6 +269,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   soglia 170): il robot non vedeva la linea, 11 LoP (→ FIX 120). Con `CAM_LINEA_AUTOTARATURA = False` (12:00): arrivo a 391 s,
   5 LoP, palline 3/3, FIX 119 ok ("tagliata dal bordo", presa al primo colpo), FIX 118 ok (rotonda 5 volte), uscita in 13 s;
   2 LoP con il robot fermo in "Verde in discesa" a velocità 14 (→ FIX 121).
+- 16/11 12:37 (**V52**): "Rifaccio la taratura" → soglia 112 (FIX 120 ok); arrivo a 325 s, 3 LoP, palline 3/3, FIX 119 ok.
+  Rotonda in cima alla rampa: verde visto ma svolta 15 cm prima (50 e 82 s, → FIX 124); dopo l'altalena sul muso (-60/-75°,
+  laser 4-6 cm, 297 e 317 s, → FIX 125); falso "LUCE" col robot inclinato (298 s, → FIX 126).
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
@@ -273,6 +281,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   Se il seguilinea va peggio della V47: `CAM_LINEA_AUTOTARATURA = False`.
 - **Due palline vicine** viste come una sola (scatola nera V46 17:52): riquadro largo → puntare a una pallina sola. Versione nuova.
 - **Gioele: issue #34 è la V49**: se la V50 viene unita prima, parte dalla V50 e prende il numero dopo (chi arriva secondo si aggiorna).
+- **V53 sul robot**: impronta `dc7b78167084f7c3`. Guardare la rotonda in cima alla rampa e, dopo l'altalena, "Sulle ruote
+  davanti ... colpetto di retromarcia" / "Di nuovo su quattro ruote". Se peggio: `IMPENNATA_RADDRIZZA = False`,
+  `VERDE_PENDENZA_RISERVA_S = 0.5`.
 - **V52 sul robot**: impronta `11f7931a83461ae6`. Rimettere `CAM_LINEA_AUTOTARATURA = True` (è il valore della V52): ora è sicura. All'inizio
   della scatola nera "CAMERA LINEA: soglia ..." oppure "ATTENZIONE CAMERA LINEA ... poco contrasto" e poi "Rifaccio la taratura".
   Avvisi "LUCE: ..." in cabina. Soglie della luce provvisorie (Gioele, issue #34).
