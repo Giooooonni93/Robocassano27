@@ -17,6 +17,7 @@ cartella. Le copie di prova delle versioni finiscono in `copie_di_prova/` (si po
 | `prova_rotonda.py` | (16/11, FIX 124) rampa di 21 gradi e la rotonda della scuola in cima (dalla foto), verdi a destra | Esce a destra dalla rotonda e arriva alla linea rossa |
 | `prova_ruote_davanti.py` | (16/11, FIX 125/129) il simulatore tiene il robot sul muso (-65 gradi) finché non dà il colpetto di retromarcia; 4° argomento: laser davanti (5, 0, 40 cm) | V52: resta così; V53: colpetto solo con 5 cm; V54: colpetto con 5, 0 e 40 cm |
 | `prova_linea_rossa.py` | (16/11, FIX 127/128) dove si ferma il robot rispetto alla linea rossa; con `lop` lo switch si spegne 7 s dopo l'uscita dall'arena | V53: rossa 16-17 cm davanti al centro (davanti al muso), con `lop` tempo scaduto; V54: 1-2 cm dal centro, arrivo |
+| `prova_nera_scambiata.py` | (19/11, FIX 130-132) YOLO vede la nera come argento (la foto resta vera); `lop`: LoP dentro l'arena (rcj2026) | V54: resta in arena; V55: 2 argento nel verde, nera nel rosso, uscita |
 | `analizza_scatola_nera.py` | eventi di una scatola nera vera, o i campioni tra due istanti | – |
 | `terminale_nuovo.py` | **moviola**: rivede una scatola nera vera nel terminale con la cabina di pilotaggio della V42 (camere, cronometro, fasi). Finestra di almeno 100 x 38 | – |
 
