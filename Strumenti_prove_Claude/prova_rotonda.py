@@ -5,7 +5,10 @@ Pista: salita di 21 gradi (2 piastrelle), poi la piastrella della rotonda della 
 (prima dell'incrocio, a destra), ramo in alto che non porta da nessuna parte. Il percorso giusto esce a destra e arriva
 alla linea rossa. Il simulatore non si tocca: la rotonda si disegna solo dentro questo script.
 
-Uso: python3 prova_rotonda.py <cartella versione> [semi]      es.  ../ClaudeRob_V52 1,2,3
+Con "lenta" (V57, FIX 135): in salita, sotto 9 cm/s, il robot va a un decimo della velocità, come il robot vero
+(23/11, V56: a velocità 22 sulla rampa il beccheggio resta +21 per 2,6 s: quasi fermo).
+
+Uso: python3 prova_rotonda.py <cartella versione> [semi] [lenta]      es.  ../ClaudeRob_V52 1,2,3 lenta
 """
 import json
 import os
@@ -57,12 +60,20 @@ def pista():
     C.setdefault("rampa", None)
     return C
 
+if len(sys.argv) > 6 and sys.argv[6] == "lenta":
+    import mondo
+    muovi_vero = mondo.Mondo._muovi_3d
+    def muovi(self, dt, v, w):
+        if self.pitch > 12 and 0 < v < 9.0:
+            v *= 0.1                                    # servo troppo lenti per la salita
+        return muovi_vero(self, dt, v, w)
+    mondo.Mondo._muovi_3d = muovi
 vecchia = campo.crea_campo
 campo.crea_campo = lambda v="normale": pista() if v == "rotonda" else vecchia(v)
 campo.SCENARI["rotonda"] = {"nome": "Prova: rotonda in cima alla rampa", "campo": "rotonda"}
 r = esegui.esegui(sys.argv[2], sys.argv[3], 90, {"seme": int(sys.argv[5])}, sys.argv[4])
 righe = [f"{t:6.1f} {m[:100]}" for t, m in r["log"]
-         if any(k in m for k in ("Incrocio con verde", "Verde in", "VADO DRITTO", "Svolta", "Linea ROSSA", "linea persa", "Linea ritrovata", "Rotonda", "rotonda"))]
+         if any(k in m for k in ("Incrocio con verde", "Verde in", "VADO DRITTO", "Svolta", "Linea ROSSA", "linea persa", "Linea ritrovata", "Rotonda", "rotonda", "Salita finita"))]
 print("RISULTATO " + json.dumps({"fine": r["fine"], "durata": r["durata"], "righe": righe[:12],
       "eventi": [e.get("testo", "")[:80] for e in r["eventi"] if e.get("tipo") in ("lop", "errore")][:4]}))
 '''
@@ -71,11 +82,12 @@ print("RISULTATO " + json.dumps({"fine": r["fine"], "durata": r["durata"], "righ
 def main():
     cartella = os.path.abspath(sys.argv[1])
     semi = [int(s) for s in (sys.argv[2] if len(sys.argv) > 2 else "1,2,3").split(",")]
+    modo = sys.argv[3] if len(sys.argv) > 3 else "-"
     nome_v = os.path.basename(cartella)
     arrivi = 0
     for seme in semi:
         nome = f"rotonda_{nome_v}_{seme}"
-        out = subprocess.run([sys.executable, "-c", GARA, SIM, cartella, nome, "rotonda", str(seme)],
+        out = subprocess.run([sys.executable, "-c", GARA, SIM, cartella, nome, "rotonda", str(seme), modo],
                              capture_output=True, text=True, cwd=QUI, timeout=600)
         f = os.path.join(SIM, f"replay_{nome}.json")
         if os.path.exists(f):
