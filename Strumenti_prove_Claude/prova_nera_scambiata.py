@@ -8,6 +8,8 @@ riparte dall'ultimo checkpoint (solo piste a piastrelle, es. rcj2026).
 "inganno_lop": la nera sembra argento anche nella FOTO (inganna anche il controllo del colore del FIX 130), così il robot
 la porta davvero nel triangolo verde; 3 s dopo l'uscita dall'arena il capitano dichiara una LoP e il robot riparte
 dall'ultimo checkpoint, PRIMA dell'arena (richiesta del prof del 19/11: deve rifare l'arena). Solo piste a piastrelle.
+"lop_uscita" (V58, FIX 139): palline normali; 5 s dopo la terza pallina portata (il robot cerca l'uscita) il capitano
+dichiara una LoP. Prima il robot rientrato rifaceva la ricerca libera (12:45 del 23/11: 69 s persi).
 Alla fine: dove sono finite le palline e se il robot è uscito dall'arena.
 Il simulatore non si tocca: tutto dentro questo script.
 
@@ -30,6 +32,8 @@ MODO = sys.argv[6]
 vera = mondo.Mondo.oggetti_arena
 def oggetti_arena(self, cosa):
     out = vera(self, cosa)
+    if MODO == "lop_uscita":
+        return out
     if cosa == "palline" and (MODO == "inganno_lop" or not getattr(self, "_foto_vera", False)):
         out = [(0, c, b) for _, c, b in out]          # la nera la vede ARGENTO
     return out
@@ -55,6 +59,17 @@ if MODO == "lop":
             self._lop_fatta = True
             self._richiedi_lop("PROVA: LoP dentro l'arena")
     mondo.Mondo.passo = passo
+if MODO == "lop_uscita":
+    passo_vero3 = mondo.Mondo.passo
+    def passo3(self, dt):
+        passo_vero3(self, dt)
+        prese = sum(1 for b in self.palline if b["stato"] in ("salvata", "sbagliata"))
+        if prese >= 3 and not hasattr(self, "_lop_t"):
+            self._lop_t = self.t + 5.0
+        if getattr(self, "_lop_t", None) and self.t >= self._lop_t and not getattr(self, "_lop_fatta", False):
+            self._lop_fatta = True
+            self._richiedi_lop("PROVA: LoP mentre cerca l'uscita")
+    mondo.Mondo.passo = passo3
 if MODO == "inganno_lop":
     passo_vero2 = mondo.Mondo.passo
     def passo2(self, dt):
@@ -74,7 +89,7 @@ DURATA = 900 if MODO == "inganno_lop" else 480       # inganno_lop: errore + LoP
 r = esegui.esegui(sys.argv[2], sys.argv[3], DURATA, {"seme": int(sys.argv[5]), "tempo_gara": DURATA}, sys.argv[4])
 log = [m for t, m in r["log"]]
 righe = [f"{t:6.1f} {m[:105]}" for t, m in r["log"] if any(k in m for k in (
-    "Scarica", "RICERCA LIBERA", "Arena: da", "non confermata", "il colore dice", "LoP dentro", "LoP:", "E' l'USCITA", "Uscito", "AVVIO ARENA", "Sono entrato", "arena è già fatta", "Striscia argento", "RO RO"))]
+    "Scarica", "RICERCA LIBERA", "Arena: da", "non confermata", "il colore dice", "LoP dentro", "LoP:", "E' l'USCITA", "Uscito", "AVVIO ARENA", "Sono entrato", "arena è già fatta", "Striscia argento", "RO RO", "LoP mentre", "Arena già completa"))]
 eventi = [f'{e.get("t", 0):6.1f} ' + e.get("testo", "")[:80] for e in r["eventi"] if "✓" in e.get("testo", "") or "✗" in e.get("testo", "") or e.get("tipo") == "lop"]
 print("RISULTATO " + json.dumps({"fine": r["fine"], "durata": r["durata"], "righe": righe[:30], "palline": eventi,
                                  "uscito": any("USCITA" in m for m in log)}))
