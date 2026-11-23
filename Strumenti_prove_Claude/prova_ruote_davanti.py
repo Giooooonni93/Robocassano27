@@ -6,6 +6,8 @@ retromarcia forte (ruote indietro a più del 70%). Il simulatore non si tocca: t
 
 Uso: python3 prova_ruote_davanti.py <cartella versione> [istante, es. 20] [scenario, es. scuola] [laser davanti in cm, es. 5 / 0 / 40]
 (V54, FIX 129: con laser 0 il VL53L1X troppo vicino non misura; con 40 il laser guarda lontano, oltre la tavola)
+5° argomento "avanti" (V57, FIX 136): il robot torna giù SOLO con un colpetto IN AVANTI (23/11 10:30: a -75 gradi gli
+8 colpetti di retromarcia non lo hanno sbloccato).
 """
 import json
 import os
@@ -22,6 +24,7 @@ sys.path.insert(0, sys.argv[1])
 import mondo, esegui
 T0 = float(sys.argv[5])
 LASER = int(sys.argv[6])
+CHIAVE = "IN AVANTI" if sys.argv[7] == "avanti" else "colpetto di retromarcia"
 sens_vero = mondo.Mondo.aggiorna_sensori_robot
 def aggiorna(self):
     sens_vero(self)
@@ -33,7 +36,7 @@ def aggiorna(self):
         self.evento("info", f"PROVA: robot sulle ruote davanti (-65 gradi, laser {LASER} cm)")
     if st == "giu":
         # il robot ha dato il colpetto di retromarcia? (lo scrive nel log)
-        if any("colpetto di retromarcia" in m for _, m in self.log[self._n_log:]):
+        if any(CHIAVE in m for _, m in self.log[self._n_log:]):
             self._muso = "su"
             self.evento("info", f"PROVA: colpetto dopo {self.t - self._muso_t:.1f} s: di nuovo su quattro ruote")
             return
@@ -51,7 +54,7 @@ def aggiorna(self):
                     rob._last_distances = (d[0], LASER, d[2])
 mondo.Mondo.aggiorna_sensori_robot = aggiorna
 r = esegui.esegui(sys.argv[2], sys.argv[3], 480, {"seme": 1}, sys.argv[4])
-righe = [f"{t:6.1f} {m[:100]}" for t, m in r["log"] if any(k in m for k in ("ruote davanti", "quattro ruote", "colpetto", "Muso giù"))]
+righe = [f"{t:6.1f} {m[:100]}" for t, m in r["log"] if any(k in m for k in ("ruote davanti", "quattro ruote", "Muso giù"))]
 prova = [f"{e.get('t', 0):6.1f} {e.get('testo', '')[:90]}" for e in r["eventi"] if "PROVA" in e.get("testo", "")]
 print("RISULTATO " + json.dumps({"fine": r["fine"], "durata": r["durata"], "righe": righe[:8], "tutto": [f"{t:6.1f} {m[:90]}" for t, m in r["log"] if 19.5 < t < 27], "prova": prova}))
 '''
@@ -62,8 +65,9 @@ def main():
     t0 = sys.argv[2] if len(sys.argv) > 2 else "20"
     scenario = sys.argv[3] if len(sys.argv) > 3 else "scuola"
     laser = sys.argv[4] if len(sys.argv) > 4 else "5"
+    modo = sys.argv[5] if len(sys.argv) > 5 else "indietro"
     nome = f"ruote_davanti_{os.path.basename(cartella)}"
-    out = subprocess.run([sys.executable, "-c", GARA, SIM, cartella, nome, scenario, t0, laser],
+    out = subprocess.run([sys.executable, "-c", GARA, SIM, cartella, nome, scenario, t0, laser, modo],
                          capture_output=True, text=True, cwd=QUI, timeout=900)
     f = os.path.join(SIM, f"replay_{nome}.json")
     if os.path.exists(f):
@@ -73,7 +77,7 @@ def main():
         print("il simulatore non è partito\n" + out.stderr[-1500:])
         return
     r = json.loads(r[0][10:])
-    print(f"{os.path.basename(cartella)} ({scenario}, sul muso a {t0} s, laser {laser} cm): {r['fine']} dopo {r['durata']:.0f} s")
+    print(f"{os.path.basename(cartella)} ({scenario}, sul muso a {t0} s, laser {laser} cm, si libera con: {modo}): {r['fine']} dopo {r['durata']:.0f} s")
     for x in r.get("tutto", []) if os.environ.get("TUTTO") else []:
         print("    .", x)
     for x in r["prova"] + r["righe"]:

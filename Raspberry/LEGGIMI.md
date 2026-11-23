@@ -1,3 +1,26 @@
+# Avvio semplice del robot: `avvia_robot.sh` (23/11)
+
+Un solo comando, dal terminale del robot, da VNC **o anche da SSH** (la finestra si apre comunque sullo schermo del robot):
+
+```
+~/avvia_robot.sh          # parte l'ULTIMA versione (come all'accensione)
+~/avvia_robot.sh 55       # parte la ClaudeRob_V55
+```
+
+Fa tutto da solo: ferma il programma del robot se sta già girando, apre la finestra grande 120 x 40 in UTF-8 (cabina con
+le due camere) e, se il programma si chiude per un errore, la finestra **resta aperta** con le ultime scritte finché
+premete Invio. Non cancella niente.
+
+## Metterlo sul robot (una volta sola)
+
+```
+curl -L -o ~/avvia_robot.sh https://raw.githubusercontent.com/Giooooonni93/Robocassano27/main/Raspberry/avvia_robot.sh
+curl -L -o ~/avvia_ultima_versione.sh https://raw.githubusercontent.com/Giooooonni93/Robocassano27/main/Raspberry/avvia_ultima_versione.sh
+chmod +x ~/avvia_robot.sh ~/avvia_ultima_versione.sh
+```
+
+---
+
 # Avvio del robot con l'ultima versione
 
 `avvia_ultima_versione.sh` (12/11) fa partire il robot **sempre con l'ultima versione** copiata sul Raspberry. Così non
