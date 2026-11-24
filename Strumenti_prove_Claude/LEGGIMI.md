@@ -19,6 +19,7 @@ cartella. Le copie di prova delle versioni finiscono in `copie_di_prova/` (si po
 | `prova_linea_rossa.py` | (16/11, FIX 127/128) dove si ferma il robot rispetto alla linea rossa; con `lop` lo switch si spegne 7 s dopo l'uscita dall'arena | V53: rossa 16-17 cm davanti al centro (davanti al muso), con `lop` tempo scaduto; V54: 1-2 cm dal centro, arrivo |
 | `prova_nera_scambiata.py` | (19/11 e 23/11, FIX 130-133, 139; `lop_uscita`: LoP mentre cerca l'uscita) YOLO vede la nera come argento (la foto resta vera); `lop`: LoP dentro l'arena (rcj2026); `inganno_lop`: anche la foto inganna, la nera va nel verde, poi LoP poco fuori dall'arena (900 s) | V54: resta in arena; V55: 3 palline giuste; `inganno_lop` V55 dietrofront e 3 LoP, V56 rientra e rifà l'arena |
 | `prova_oscillazione.py` | (23/11, FIX 141) per 15 s il seguilinea "vede" quello che vedeva il robot vero nell'angolo del quadrato (spinta a destra / correzione a sinistra) | V57 nessuna reazione; V58 dopo 4 s "sterzo a destra e a sinistra... passo l'angolo" |
+| `prova_ostacolo_muso.py` | (24/11, FIX 142) quando il robot tocca l'ostacolo (laser < 14 cm vicino all'ostacolo, pista `gara`) il muso si alza di 9 gradi | V58: "è una RAMPA", bloccato; V59: "Ostacolo confermato: il muso si alza", lo aggira |
 | `analizza_scatola_nera.py` | eventi di una scatola nera vera, o i campioni tra due istanti | – |
 | `terminale_nuovo.py` | **moviola**: rivede una scatola nera vera nel terminale con la cabina di pilotaggio della V42 (camere, cronometro, fasi). Finestra di almeno 100 x 38 | – |
 

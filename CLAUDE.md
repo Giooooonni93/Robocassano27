@@ -12,11 +12,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V58**; la V49 è prenotata da Gioele, issue #34).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V59**; la V49 è prenotata da Gioele, issue #34).
    Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 141**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 143**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -43,7 +43,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   una pull request) → un'issue per pezzo (es. Battista l'altalena, Gioele l'uscita) → ognuno la sua versione, analisi della
   scatola nera, simulatore, pull request con prima/dopo → il prof controlla e unisce → chi arriva secondo si aggiorna → la
   versione nuova va sul robot. Dettagli per gli studenti in `COME_LAVORARE.md`.
-- Il repository contiene le **ultime versioni** del codice (V39-V57 come riferimento, V58), i simulatori V31 e V32, gli strumenti
+- Il repository contiene le **ultime versioni** del codice (V39-V58 come riferimento, V59), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
 - **Come nelle aziende (dal 12/11, dopo V46 e V47 partite tutte e due dalla V45 e unite senza aggiornarsi)**: sezione 3bis di
@@ -107,7 +107,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V58, impronta 60f168cd052764d4; V57: d921fe098ebf45a3; V56: 816c8c0d0f014299; V55: 052b1a78147ba806; V54: 827ba647e7af4612; V53: dc7b78167084f7c3; V52: 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V59, impronta ba400159f90cc565; V58: 60f168cd052764d4; V57: d921fe098ebf45a3; V56: 816c8c0d0f014299; V55: 052b1a78147ba806; V54: 827ba647e7af4612; V53: dc7b78167084f7c3; V52: 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -264,6 +264,10 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   → rientrato cerca subito l'uscita. FIX 140: giro dei muri, muro davanti < 35 cm che non si avvicina in 4 s = angolo.
   FIX 141: destra-sinistra senza fine (10 cambi di sterzate al massimo > 140, 3 spinte, rotta ferma, 6 s) → fermo, verde, se no
   passa l'angolo. Prove: `prova_nera_scambiata.py ... lop_uscita`, `prova_oscillazione.py`, `prova_rotonda.py` 6/6.
+- **V59** (24/11, issue #59) FIX 142: **ostacolo preso per rampa** (il muso si alza toccandolo): `VerificaRampa` a vel 34 per 1,5 s,
+  rampa solo oltre 14 gradi, se no ostacolo (`StaccaDallOstacolo` fino a 12 cm). FIX 143: sosta di fine salita interrotta se la
+  tavola dell'altalena si abbassa (beccheggio < -10). Prove: `prova_ostacolo_muso.py` (V58 bloccata, V59 aggira). Batteria = V58
+  (scuola_nuova 1-6: 8 LoP), contorto tempo scaduto (variabilità dopo l'uscita).
 
 ## Com'è andata sul robot vero
 - 12/11 10:09 (**V43**): percorso completo, 3 vittime, uscita in 10 s, altalena, linea rossa a 547 s; **8 LoP**, una sola scatola nera
@@ -313,6 +317,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   ancora sbagliata (salita di traverso, il FIX 135 andava dritto, → FIX 138); 12:25 destra-sinistra nell'angolo della piastrella
   col quadrato (→ FIX 141); 12:45 palline 3/3, bloccato in un angolo cercando l'uscita (→ FIX 140), dopo la LoP 69 s di ricerca
   inutile (→ FIX 139), arrivo a 505 s sopra la linea rossa; altalena: colpetti ok ("di nuovo su quattro ruote").
+- 24/11 11:05 (**V58**, pista NUOVA): ostacolo a 127 s preso per una rampa (muso +7/+9, → FIX 142); sosta di fine salita sul
+  perno dell'altalena (21, 64, 97 s, → FIX 143); colpetti dopo l'altalena ok. Il prof pensava che l'ostacolo mancasse nel programma.
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
@@ -322,6 +328,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   Se il seguilinea va peggio della V47: `CAM_LINEA_AUTOTARATURA = False`.
 - **Due palline vicine** viste come una sola (scatola nera V46 17:52): riquadro largo → puntare a una pallina sola. Versione nuova.
 - **Gioele: issue #34 è la V49**: se la V50 viene unita prima, parte dalla V50 e prende il numero dopo (chi arriva secondo si aggiorna).
+- **V59 sul robot**: impronta `ba400159f90cc565`. All'ostacolo: "Ostacolo confermato: il muso si alza..." poi "OSTACOLO" e "FINE
+  OSTACOLO"; sull'altalena "Era l'altalena". Se peggio: `OST_RAMPA_VERIFICA`, `FINE_SALITA_NO_ALTALENA`.
+- **Cabina "più chiara"** (prof, 24/11): chiedere cosa non è chiaro e rifarla.
 - **V58 sul robot**: impronta `60f168cd052764d4`. Guardare "Verde visto in salita", "Fine della salita... guardo", "Arena già
   completa: cerco subito l'uscita", "non mi avvicino: è un angolo", "sterzo a destra e a sinistra". Se peggio: `FINE_SALITA_GUARDA`,
   `ARENA_RIENTRO_USCITA`, `PARETE_ANGOLO_STALLO`, `OSCILLA_CONTROLLO`.
