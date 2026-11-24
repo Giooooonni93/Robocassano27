@@ -19,6 +19,16 @@ curl -L -o ~/avvia_ultima_versione.sh https://raw.githubusercontent.com/Giooooon
 chmod +x ~/avvia_robot.sh ~/avvia_ultima_versione.sh
 ```
 
+## Scritte della cabina più grandi (24/11)
+
+La grandezza delle scritte la decide il terminale, non il programma. Una volta sola, dal terminale del robot:
+```
+sed -i 's/^fontname=.*/fontname=Monospace 13/' ~/.config/lxterminal/lxterminal.conf
+```
+(oppure, in una finestra di lxterminal: Modifica > Preferenze > Carattere). Poi `~/avvia_robot.sh`. Controllate che la
+cabina stia ancora nello schermo: nella finestra `tput cols; tput lines` deve dare almeno 100 e 38. Se è più piccola provate
+12; se c'è spazio 14. Per tornare come prima: `Monospace 10`.
+
 ---
 
 # Avvio del robot con l'ultima versione

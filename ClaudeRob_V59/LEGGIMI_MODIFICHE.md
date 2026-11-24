@@ -156,6 +156,7 @@ Per trovarle tutte in Notepad++: **Cerca → Trova nei file → `[FIX`**.
 | 141 | RwdFoto, Monitor, DataConf | Destra-sinistra senza fine nel seguilinea: in 6 s almeno 10 cambi di verso delle sterzate al massimo (oltre 140) con almeno 3 spinte e rotta ferma (entro 40 gradi): fermo, guardo il verde, se no passo l'angolo dalla parte della spinta (`ControllaOscillazione`, interruttore `OSCILLA_CONTROLLO`) | 23/11 12:25, 176-187 s: piastrella col quadrato, 11 s di destra-sinistra nell'angolo, poi LoP |
 | 142 | RwdFoto, Monitor, DataConf | Ostacolo o rampa: se il muso si alza oltre 6 gradi, continua a `OST_RAMPA_VEL` (34) per `OST_RAMPA_VERIFICA_S` (1,5 s): rampa solo se arriva a `OST_RAMPA_SICURA_GRADI` (14), se no ostacolo, arretra fino a 12 cm e lo aggira (`VerificaRampa`, `StaccaDallOstacolo`, interruttore `OST_RAMPA_VERIFICA`) | 24/11 11:05 (V58), 127 s: toccando l'ostacolo il muso si alza di 7-9 gradi, "è una RAMPA", non lo aggira (anche 23/11 12:45, 46,8 s) |
 | 143 | RwdFoto, Monitor, DataConf | Fine salita: se durante la sosta il beccheggio scende sotto -10 (la tavola dell'altalena si abbassa) la sosta finisce subito (interruttore `FINE_SALITA_NO_ALTALENA`) | 24/11 11:05, 21, 64 e 97 s: "Fine della salita: mi fermo e guardo" sul perno dell'altalena |
+| 144 | Cabina, DataConf | Cabina ad alto contrasto: etichette quasi bianche, cornice più chiara, colori più accesi (interruttore `CABINA_ALTO_CONTRASTO`) | Il prof, 24/11: "la cabina non è molto chiara" (scritte piccole o colori) |
 
 ## FIX 113 – Lux, controllo vista e camera arena
 

@@ -263,6 +263,7 @@ OST_RAMPA_SICURA_GRADI = 14   # [FIX 142] beccheggio da cui è sicuramente una r
 OST_DISTANZA_GIRO_CM = 12     # [FIX 142] confermato l'ostacolo arretra finché il laser davanti legge almeno tanto
 FINE_SALITA_NO_ALTALENA = True  # [FIX 143] interruttore: se durante la sosta di fine salita la tavola si abbassa, niente sosta
 FINE_SALITA_ALTALENA_GRADI = 10 # [FIX 143] beccheggio sotto -10 durante la sosta = altalena
+CABINA_ALTO_CONTRASTO = True  # [FIX 144] cabina con etichette quasi bianche, cornice chiara e colori accesi (False = colori di prima)
 LUCE_AVVISI = True            # [FIX 123] interruttore: avviso nella cabina e nella scatola nera se la luce è troppo alta o troppo bassa
 LUCE_BIANCO_MIN = 120         # [FIX 123] pavimento nella camera linea (V, 75 percentile) sotto così = troppo scuro (gare buone 172-215)
 LUCE_BIANCO_MAX = 232         # [FIX 123] ...sopra così = bruciato (16/11 mattina: 239-240)
@@ -366,7 +367,7 @@ PENDENZA_CONFERMA_S = 0.4   # il nuovo stato deve durare almeno così prima di e
 ROLLIO_POSITIVO_A_DESTRA = False
 
 # [FIX 37] Terminale, scatola nera e cruscotto 3D (ViennaMonitor.py)
-VERSIONE = "ClaudeRob V59"  # [FIX 142] ostacolo che fa alzare il muso non è una rampa; [FIX 143] niente "fine salita" sull'altalena
+VERSIONE = "ClaudeRob V59"  # [FIX 142] ostacolo che fa alzare il muso non è una rampa; [FIX 143] niente "fine salita" sull'altalena; [FIX 144] cabina più chiara
 PANNELLO = False            # [FIX 42] finestra "ClaudeRob - STATO" con tutti i sensori e l'operazione in corso
                             # [FIX 109] dalla V44 spenta: la cabina del terminale (FIX 107) ha già tutto, camere comprese.
                             # True = si apre anche lei (per vedere le camere grandi)

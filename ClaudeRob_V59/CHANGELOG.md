@@ -4,7 +4,7 @@ Robot RoboCup Junior Rescue Line – IISS "Erodoto di Thurii", Cassano allo Ioni
 Versione attuale: **ClaudeRob V59** (24 novembre 2026)
 
 Questo file riassume, versione per versione, cosa è cambiato e perché. Il dettaglio tecnico di ogni
-modifica è in `LEGGIMI_MODIFICHE.md`: ogni correzione è numerata (FIX 1 … FIX 143) e nel codice è
+modifica è in `LEGGIMI_MODIFICHE.md`: ogni correzione è numerata (FIX 1 … FIX 144) e nel codice è
 segnata con un commento `# [FIX n]`, così si ritrova subito con "Cerca" in Notepad++.
 
 Il programma da lanciare è sempre `RwdFoto.py` dalla cartella `ClaudeRob_V59` (oppure `./avvia.sh`).
@@ -73,7 +73,7 @@ sono nello zip.
 | V56 | Dopo una LoP poco fuori dall'arena, se il robot rivede l'ingresso rientra e rifà l'arena (ricerca libera) invece del dietrofront |
 | V57 | Camera arena ritarata dentro l'arena (mai bloccata al buio), rotonda in cima alla salita presa sul piano, colpetti in avanti col robot verticale, nella ricerca libera la stessa pallina nelle due foto |
 | V58 | In cima alla salita segue la linea, si ferma e guarda; dopo una LoP mentre cerca l'uscita va subito all'uscita; negli angoli dell'arena non resta bloccato; esce dal destra-sinistra senza fine |
-| V59 | L'ostacolo che fa alzare il muso non è più preso per una rampa (lo aggira); niente sosta di fine salita sulla tavola dell'altalena |
+| V59 | L'ostacolo che fa alzare il muso non è più preso per una rampa (lo aggira); niente sosta di fine salita sulla tavola dell'altalena; cabina più chiara |
 
 ---
 
@@ -96,6 +96,11 @@ attraversa lo zero: il FIX 138 diceva "Fine della salita: mi fermo e guardo" sul
 scende sotto -`FINE_SALITA_ALTALENA_GRADI` (10) la sosta finisce subito ("Era l'altalena") e ci pensa la procedura dell'altalena.
 Sulle rampe vere la sosta parte come prima (provato anche a ritardarla di 0,4 s: in `scuola_nuova` cambiava l'arrivo al tunnel e
 le LoP salivano da 8 a 14). Interruttore `FINE_SALITA_NO_ALTALENA`.
+
+**FIX 144 – cabina più chiara.** Il prof (24/11): "non mi è molto chiara la cabina" (scritte piccole o colori). Le etichette
+erano grigio 244 e la cornice blu scuro 67: sullo schermo del robot e in VNC si leggevano male. Con `CABINA_ALTO_CONTRASTO`
+(True) le etichette sono quasi bianche (250), la cornice più chiara (111) e i colori più accesi. La grandezza delle scritte la
+decide lxterminal: istruzioni in `Raspberry/LEGGIMI.md` ("Scritte della cabina più grandi"). La gara non cambia.
 
 **Prove.**
 - Ostacolo che fa alzare il muso (`prova_ostacolo_muso.py`, pista `gara`, muso a +9 gradi quando tocca l'ostacolo): V58 "è

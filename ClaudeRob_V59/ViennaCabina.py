@@ -41,6 +41,18 @@ def bg(n):
 
 DIM, TESTO, CORNICE, TITOLO = fg(244), fg(253), fg(67), fg(117)
 VERDE, GIALLO, ARANCIO, ROSSO, AZZURRO, VIOLA, BIANCO = fg(78), fg(220), fg(208), fg(203), fg(81), fg(177), fg(255)
+# [FIX 144] CABINA PIÙ CHIARA (il prof, 24/11: "scritte piccole o colori"). Il grigio delle etichette (244) e la cornice blu
+# scuro (67) sullo schermo del robot e in VNC si leggevano male. Con CABINA_ALTO_CONTRASTO (ViennaDataConf) le etichette sono
+# quasi bianche, la cornice più chiara e i colori più accesi. La grandezza delle scritte invece la decide il terminale
+# (lxterminal: Modifica > Preferenze > Carattere, vedi Raspberry/LEGGIMI.md).
+try:
+    import ViennaDataConf as _conf
+    _alto = bool(getattr(_conf, "CABINA_ALTO_CONTRASTO", True))
+except Exception:
+    _alto = True
+if _alto:
+    DIM, TESTO, CORNICE, TITOLO = fg(250), fg(255), fg(111), fg(123)
+    VERDE, GIALLO, ARANCIO, ROSSO, AZZURRO, VIOLA = fg(46), fg(226), fg(214), fg(196), fg(51), fg(213)
 FASI = [("SEGUILINEA", 29), ("INGRESSO", 31), ("VITTIME", 25), ("USCITA", 97), ("ALTALENA", 130), ("ARRIVO", 160)]
 NOMI_FASI = [f[0] for f in FASI]
 COL_CAT = {"linea": VERDE, "incrocio": GIALLO, "ostacolo": VIOLA, "arena": AZZURRO, "gara": fg(147),
