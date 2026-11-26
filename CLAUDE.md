@@ -274,6 +274,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   SUPERATO a m:ss / NON SUPERATO (LoP); anche nella moviola. FIX 146: **sul muso, solo le ruote davanti indietro** a 100
   (`Rwd.SoloRuoteDavanti`) finché il beccheggio torna sopra -35, max 2,5 s, 2 volte, poi i colpetti di prima (`IMPENNATA_ANTERIORI`;
   idea del prof). Prove: `prova_ruote_davanti.py ... anteriori` (V59 resta sul muso, V60 giù in 1,3 s). Batteria identica alla V59.
+  Unita (PR #62) prima delle prove nel CHANGELOG: lì c'è ancora "PROVE_QUI"; le prove sono nella PR #63. Nella V61 rimetterle
+  nella sezione V60 del suo CHANGELOG.
 ## Com'è andata sul robot vero
 - 12/11 10:09 (**V43**): percorso completo, 3 vittime, uscita in 10 s, altalena, linea rossa a 547 s; **8 LoP**, una sola scatola nera
   (FIX 108 ok). Errori: rotonda (gira 3 volte a destra), verdi in diagonale (riprende il ramo dritto, 2 volte), falso argento
