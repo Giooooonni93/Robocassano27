@@ -8,6 +8,8 @@ Uso: python3 prova_ruote_davanti.py <cartella versione> [istante, es. 20] [scena
 (V54, FIX 129: con laser 0 il VL53L1X troppo vicino non misura; con 40 il laser guarda lontano, oltre la tavola)
 5° argomento "avanti" (V57, FIX 136): il robot torna giù SOLO con un colpetto IN AVANTI (23/11 10:30: a -75 gradi gli
 8 colpetti di retromarcia non lo hanno sbloccato).
+5° argomento "anteriori" (V60, FIX 146): il robot torna giù SOLO se le due ruote DAVANTI vanno indietro forte (oltre il
+70%) con le due dietro ferme, per almeno 0,8 s in tutto (26/11 V59: i colpetti di 0,2 s con 4 ruote non bastavano).
 """
 import json
 import os
@@ -25,6 +27,9 @@ import mondo, esegui
 T0 = float(sys.argv[5])
 LASER = int(sys.argv[6])
 CHIAVE = "IN AVANTI" if sys.argv[7] == "avanti" else "colpetto di retromarcia"
+ANTERIORI = sys.argv[7] == "anteriori"
+def frazione(self, ch):
+    return self._frazione_servo(self.pwm.get((0x41, ch), 0))
 sens_vero = mondo.Mondo.aggiorna_sensori_robot
 def aggiorna(self):
     sens_vero(self)
@@ -36,7 +41,18 @@ def aggiorna(self):
         self.evento("info", f"PROVA: robot sulle ruote davanti (-65 gradi, laser {LASER} cm)")
     if st == "giu":
         # il robot ha dato il colpetto di retromarcia? (lo scrive nel log)
-        if any(CHIAVE in m for _, m in self.log[self._n_log:]):
+        if ANTERIORI:
+            # [FIX 146] davanti: sinistra 15 indietro (< -0,7), destra 0 a specchio (> 0,7); dietro 4 e 11 ferme
+            spinta = (frazione(self, 15) < -0.7 and frazione(self, 0) > 0.7
+                      and abs(frazione(self, 4)) < 0.2 and abs(frazione(self, 11)) < 0.2)
+            dt = self.t - getattr(self, "_t_prec", self.t)
+            self._t_prec = self.t
+            self._spinta = getattr(self, "_spinta", 0.0) + (dt if spinta else 0.0)
+            if self._spinta >= 0.8:
+                self._muso = "su"
+                self.evento("info", f"PROVA: ruote davanti indietro per {self._spinta:.1f} s, dopo {self.t - self._muso_t:.1f} s: di nuovo su quattro ruote")
+                return
+        elif any(CHIAVE in m for _, m in self.log[self._n_log:]):
             self._muso = "su"
             self.evento("info", f"PROVA: colpetto dopo {self.t - self._muso_t:.1f} s: di nuovo su quattro ruote")
             return
@@ -54,7 +70,7 @@ def aggiorna(self):
                     rob._last_distances = (d[0], LASER, d[2])
 mondo.Mondo.aggiorna_sensori_robot = aggiorna
 r = esegui.esegui(sys.argv[2], sys.argv[3], 480, {"seme": 1}, sys.argv[4])
-righe = [f"{t:6.1f} {m[:100]}" for t, m in r["log"] if any(k in m for k in ("ruote davanti", "quattro ruote", "Muso giù"))]
+righe = [f"{t:6.1f} {m[:100]}" for t, m in r["log"] if any(k in m for k in ("ruote davanti", "Ruote davanti", "RUOTE DAVANTI", "quattro ruote", "Muso giù"))]
 prova = [f"{e.get('t', 0):6.1f} {e.get('testo', '')[:90]}" for e in r["eventi"] if "PROVA" in e.get("testo", "")]
 print("RISULTATO " + json.dumps({"fine": r["fine"], "durata": r["durata"], "righe": righe[:8], "tutto": [f"{t:6.1f} {m[:90]}" for t, m in r["log"] if 19.5 < t < 27], "prova": prova}))
 '''

@@ -103,9 +103,10 @@ class Moviola:
         t = c["t"]
         eta_l = t - self.t_img_l if self.t_img_l is not None else None
         eta_a = t - self.t_img_a if self.t_img_a is not None else None
+        extra = {"prove": self.fasi.prove_fatte()} if hasattr(self.fasi, "prove_fatte") else {}   # [FIX 145] dalla V60
         return VC.schermo(c, self.storia, self.eventi[-40:], self.fasi.adesso(), self.fasi.durate(), self.versione,
                           self.crono.tempi(t), VC.da_jpeg_base64(self.img_l), VC.da_jpeg_base64(self.img_a),
-                          eta_l, eta_a, colonne, righe)
+                          eta_l, eta_a, colonne, righe, **extra)
 
 
 def main():
