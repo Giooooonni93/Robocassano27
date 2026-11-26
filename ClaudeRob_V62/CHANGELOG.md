@@ -118,11 +118,22 @@ Interruttore `USCITA_DISCESA_FUORI`.
   scende regolare 91 → 68 → 64 → ... → 2 invece di 68 → 120. Sulle run dal 23/11 toglie da 0 a 9 salti per run, solo
   quelli impossibili.
 - Salto della bussola nel simulatore (`prova_salto_bussola.py`: +52 gradi a metà di ogni svolta a sinistra al verde, la
-  rotta passa da `_togli_salto` come sul robot): SALTI_QUI
+  rotta passa da `_togli_salto` come sul robot): 
+  | gara | V61 | V62 |
+  |---|---|---|
+  | rcj2026 seme 1 | tempo scaduto, 1 LoP | arrivo 391 s, 0 LoP |
+  | rcj2026 seme 2 | tempo scaduto, 1 LoP | arrivo 378 s, 0 LoP |
+  | scuola_nuova seme 1 | tempo scaduto, 4 LoP | arrivo 356 s, 3 LoP |
+  | scuola_nuova seme 2 | arrivo 348 s, 4 LoP | arrivo 312 s, 1 LoP |
+
+  La V62 scrive "BUSSOLA: salto di +52 gradi ... tolto". Dopo la correzione resta circa 1 grado di differenza (il salto misurato
+  comprende la rotazione vera tra due pacchetti): per questo con il salto non è identica alla gara senza salto. Con lo switch
+  spento (LoP: robot spostato a mano) il filtro non corregge.
 - Uscita in discesa (`prova_uscita_discesa.py arena`: dopo la porta 2 s con beccheggio -20 e laser davanti 50 cm):
   - V61 "non avanzo dopo 1,9 s", torna dentro, **bloccato**;
   - V62 "il muso scende: sono fuori", "Uscita confermata", arrivo in 265 s.
-- Batteria: BATTERIA_QUI
+- Batteria: 11 gare **identiche alla V61** campione per campione (nel simulatore la rotta non passa dal thread che legge
+  l'Arduino: senza salti le gare sono le stesse). `controlla_versione.py` e `confronta_simulatore.py`: OK.
 
 ## V61 – 26 novembre 2026
 
