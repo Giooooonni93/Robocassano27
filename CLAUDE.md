@@ -107,7 +107,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V61, impronta b3cd67fd37fd9603; V60: bdac1c5d365d28c1; V59: e11ddb3971ebe3cb; V58: 60f168cd052764d4; V57: d921fe098ebf45a3; V56: 816c8c0d0f014299; V55: 052b1a78147ba806; V54: 827ba647e7af4612; V53: dc7b78167084f7c3; V52: 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V61, impronta 6d5af7d95a142136; V60: bdac1c5d365d28c1; V59: e11ddb3971ebe3cb; V58: 60f168cd052764d4; V57: d921fe098ebf45a3; V56: 816c8c0d0f014299; V55: 052b1a78147ba806; V54: 827ba647e7af4612; V53: dc7b78167084f7c3; V52: 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -347,7 +347,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   Se il seguilinea va peggio della V47: `CAM_LINEA_AUTOTARATURA = False`.
 - **Due palline vicine** viste come una sola (scatola nera V46 17:52): riquadro largo → puntare a una pallina sola. Versione nuova.
 - **Gioele: issue #34 è la V49**: se la V50 viene unita prima, parte dalla V50 e prende il numero dopo (chi arriva secondo si aggiorna).
-- **V61 sul robot**: impronta `b3cd67fd37fd9603`. Davanti all'ostacolo: "Ingresso ANNULLATO: ... è l'OSTACOLO" invece di entrare;
+- **V61 sul robot**: impronta `6d5af7d95a142136`. Davanti all'ostacolo: "Ingresso ANNULLATO: ... è l'OSTACOLO" invece di entrare;
   sul bordo "Ostacolo: BORDO DELLA PISTA a ...". Il bordo vero non è ancora provato (solo simulatore + 2 immagini del 05/11 e 13/11):
   se si ferma senza motivo `OST_BORDO = False`, o scegliere il lato con `OST_LATO_PREFERITO`. Se peggio: `ARGENTO_OGGETTO = False`.
 - **Modelli YOLO su GitHub** (prof, 26/11): non sono qui (stanno sul Raspberry); da caricare (4 x ~10 MB) in `Modelli_YOLO/`.

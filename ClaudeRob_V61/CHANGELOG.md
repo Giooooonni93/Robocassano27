@@ -134,7 +134,10 @@ con `model.ncnn.bin` sotto 1 MB è "vuoto": lo sposta in `~/modelli_rotti_<data>
     indietro, lo aggira a sinistra, FINE OSTACOLO, non cade;
   - **bordo a sinistra:** V60 = V61 (passano a destra).
 - Le immagini vere: `OggettoSullArgento` su tutti gli ingressi delle scatole nere (vedi sopra).
-- Batteria: BATTERIA_QUI
+- Batteria: 11 gare (scuola_nuova 1-3, scuola, rcj2026 1-2, lunga, contorto, gara, arena, arena_parete) **identiche alla V60**
+  campione per campione. (Con il primo modo di controllare il bordo, un ciclo a parte di passi da 0,1 s, scuola_nuova seme 2
+  cambiava: falso ostacolo nel tunnel, 4 LoP invece di 1. Ora il controllo è dentro `AvantiOst` e senza bordo i movimenti
+  sono quelli di prima.) `controlla_versione.py` e `confronta_simulatore.py`: OK.
 
 ## V60 – 26 novembre 2026
 
