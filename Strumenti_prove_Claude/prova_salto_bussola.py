@@ -43,7 +43,7 @@ def aggiorna(self):
         return
     hd = int(round(hd + st["salto"])) % 360
     if hasattr(r, "_togli_salto"):                 # V62: come il thread che legge l'Arduino
-        hd = r._togli_salto(hd, pt, rl)
+        hd = r._togli_salto(hd, pt, rl, r._last_switch[1]) if r._togli_salto.__code__.co_argcount > 4 else r._togli_salto(hd, pt, rl)
     with r._lock:
         r._last_imu = (pt, rl, hd)
 mondo.Mondo.aggiorna_sensori_robot = aggiorna

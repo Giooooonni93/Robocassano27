@@ -353,7 +353,7 @@ class Robot:
                         except ValueError:
                             continue
 
-                        hd = self._togli_salto(hd, pt, rl)   # [FIX 149]
+                        hd = self._togli_salto(hd, pt, rl, sw1)   # [FIX 149] (sw1 = switch di avvio acceso)
                         with self._lock:
                             self._last_distances = (d1, d2, d3)
                             self._last_imu = (pt, rl, hd)
@@ -592,7 +592,7 @@ class Robot:
         with self._lock:
             return self._last_distances
 
-    def _togli_salto(self, hd, pt, rl):
+    def _togli_salto(self, hd, pt, rl, acceso=True):
         # [FIX 149] SALTI DELLA BUSSOLA. Scatole nere V61 del 26/11 (15:17 a 24,7 s, 15:29 a 24,6 s, 15:39 a 22,8 s), sempre
         # alla stessa svolta a sinistra dopo l'altalena: mentre il robot gira a circa 40 gradi/s, la rotta del BNO055 salta
         # di +52 gradi in UN pacchetto (66-69 -> 118-121) e poi continua regolare. Il robot non può girare di 52 gradi in
@@ -600,14 +600,15 @@ class Robot:
         # dell'altalena). La svolta si fermava a metà o girava troppo e il robot perdeva la linea. Salti di 50-150 gradi
         # ci sono in tutte le run dal 24/11. Ora un cambio di rotta più veloce di BUSSOLA_SALTO_GS gradi al secondo (+
         # BUSSOLA_SALTO_TOLL) tra due pacchetti vicini si toglie: la rotta continua da dove era. Dopo una pausa dei dati
-        # (switch spento, Arduino zitto) o con il giroscopio bloccato (-2, -2, 0) non si corregge niente.
+        # (switch spento, Arduino zitto) o con il giroscopio bloccato (-2, -2, 0) non si corregge niente: con lo switch
+        # spento (LoP) il robot viene spostato a mano e la rotta cambia davvero di colpo.
         if not getattr(RwdConf, "BUSSOLA_TOGLI_SALTI", True):
             return hd
         adesso = time.time()
         bloccato = (pt, rl, hd) == (-2, -2, 0)
         prec = self._hd_prec
-        self._hd_prec = None if bloccato else (adesso, hd)
-        if prec is None or bloccato:
+        self._hd_prec = None if (bloccato or not acceso) else (adesso, hd)
+        if prec is None or bloccato or not acceso:
             return int(round(hd + self._hd_correzione)) % 360
         dt = adesso - prec[0]
         if dt > 0.3:
