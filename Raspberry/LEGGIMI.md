@@ -39,7 +39,8 @@ serve più il comando `ln -sfn ... ~/ClaudeRob_GARA` a ogni versione nuova.
 A ogni accensione:
 1. sceglie la cartella `~/ClaudeRob_V<n>` con il **numero più alto** che contiene `RwdFoto.py` (una cartella vuota o
    copiata a metà viene saltata; nomi come `ClaudeRob_V46_copia` vengono ignorati);
-2. se mancano, ci copia i **4 modelli YOLO** da `/home/pi`;
+2. se mancano **o sono vuoti** (26/11: copia interrotta, file a 0 byte, YOLO dava `IndexError: list index out of range`), ci copia
+   i **4 modelli YOLO** da `/home/pi` o dall'ultima versione che li ha buoni; quelli vuoti li sposta in `~/modelli_rotti_<data>`;
 3. rende eseguibile `avvia.sh`;
 4. sposta `~/ClaudeRob_GARA` su quella cartella, scrive quale versione parte (con l'impronta) e la fa partire.
 

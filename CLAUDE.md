@@ -12,11 +12,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V60**; la V49 è prenotata da Gioele, issue #34).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V61**; la V49 è prenotata da Gioele, issue #34).
    Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 146**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 148**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -43,7 +43,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   una pull request) → un'issue per pezzo (es. Battista l'altalena, Gioele l'uscita) → ognuno la sua versione, analisi della
   scatola nera, simulatore, pull request con prima/dopo → il prof controlla e unisce → chi arriva secondo si aggiorna → la
   versione nuova va sul robot. Dettagli per gli studenti in `COME_LAVORARE.md`.
-- Il repository contiene le **ultime versioni** del codice (V39-V59 come riferimento, V60), i simulatori V31 e V32, gli strumenti
+- Il repository contiene le **ultime versioni** del codice (V39-V60 come riferimento, V61), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
 - **Come nelle aziende (dal 12/11, dopo V46 e V47 partite tutte e due dalla V45 e unite senza aggiornarsi)**: sezione 3bis di
@@ -107,7 +107,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V60, impronta bdac1c5d365d28c1; V59: e11ddb3971ebe3cb; V58: 60f168cd052764d4; V57: d921fe098ebf45a3; V56: 816c8c0d0f014299; V55: 052b1a78147ba806; V54: 827ba647e7af4612; V53: dc7b78167084f7c3; V52: 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V61, impronta b3cd67fd37fd9603; V60: bdac1c5d365d28c1; V59: e11ddb3971ebe3cb; V58: 60f168cd052764d4; V57: d921fe098ebf45a3; V56: 816c8c0d0f014299; V55: 052b1a78147ba806; V54: 827ba647e7af4612; V53: dc7b78167084f7c3; V52: 11f7931a83461ae6; V51: 097307d16e30102c; V50: 2a38890a5a015989; V48: 2be0cb5b232b454e; V47: 5dde2b42d0fdd213; V46: c87470334e619b43; V45: c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -274,8 +274,13 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   SUPERATO a m:ss / NON SUPERATO (LoP); anche nella moviola. FIX 146: **sul muso, solo le ruote davanti indietro** a 100
   (`Rwd.SoloRuoteDavanti`) finché il beccheggio torna sopra -35, max 2,5 s, 2 volte, poi i colpetti di prima (`IMPENNATA_ANTERIORI`;
   idea del prof). Prove: `prova_ruote_davanti.py ... anteriori` (V59 resta sul muso, V60 giù in 1,3 s). Batteria identica alla V59.
-  Unita (PR #62) prima delle prove nel CHANGELOG: lì c'è ancora "PROVE_QUI"; le prove sono nella PR #63. Nella V61 rimetterle
-  nella sezione V60 del suo CHANGELOG.
+  Unita (PR #62) prima delle prove nel CHANGELOG: nella cartella V60 c'è ancora "PROVE_QUI"; le prove sono nel CHANGELOG della V61.
+- **V61** (26/11, issue #65) FIX 147: **la scatola dell'ostacolo non è l'ingresso**: "argento" con laser davanti < 25 cm e > 20% del
+  terzo alto dell'immagine colorato = ostacolo (`OggettoSullArgento`, `ARGENTO_OGGETTO*`; ingressi veri 0-10%, scatola 40-84%).
+  FIX 148: **ostacolo, bordo della pista** (`BordoPista`: < 45% di bianco 2 volte sul primo lato → torna indietro, `TornaIndietroOst(rotta0,
+  secondi)`, e passa dall'altro lato; memoria 120 s; `OST_LATO_PREFERITO` auto/destra/sinistra; "Ostacolo interrotto: switch spento").
+  `avvia_ultima_versione.sh`: modelli vuoti (< 1 MB) spostati in `~/modelli_rotti_<data>` e ricopiati. Prove: `prova_scatola_argento.py`
+  (V60 AVVIO ARENA in mezzo alla pista, V61 aggira), `prova_ostacolo_bordo.py ... destra/sinistra` (V60 cade, V61 cambia lato).
 ## Com'è andata sul robot vero
 - 12/11 10:09 (**V43**): percorso completo, 3 vittime, uscita in 10 s, altalena, linea rossa a 547 s; **8 LoP**, una sola scatola nera
   (FIX 108 ok). Errori: rotonda (gira 3 volte a destra), verdi in diagonale (riprende il ramo dritto, 2 volte), falso argento
@@ -329,6 +334,10 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - 26/11 10:47 (**V59**): camera linea all'avvio senza contrasto (nero V=164 / bianco 19x, soglia di riserva 110); altalena a 21 s:
   sul muso -62/-75 gradi per 18 s, 4 serie di colpetti inutili (durante il colpetto sale a -53, poi ricade), LoP (→ FIX 146);
   seconda altalena (66 s) superata; ingresso con muro a 27 cm e apertura trovata; scatola nera finisce a 141 s (in arena).
+- 26/11 12:33-12:58 (**V60**): 12:41 i 4 modelli YOLO della V60 a **0 byte** (copia interrotta): `IndexError` in `VerificaVerde`
+  ogni 3 s (→ `avvia_ultima_versione.sh` li controlla). 12:53: giroscopio bloccato da 57 s; ostacolo (scatola di cartone) aggirato a
+  sinistra, lento, fermato dal prof; a 118 s la scatola vista come argento → "entrato nell'arena" in mezzo alla pista (→ FIX 147);
+  12:58 stessa cosa a 50,8 s. Altalena 3 volte: niente sul muso.
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
@@ -338,6 +347,10 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   Se il seguilinea va peggio della V47: `CAM_LINEA_AUTOTARATURA = False`.
 - **Due palline vicine** viste come una sola (scatola nera V46 17:52): riquadro largo → puntare a una pallina sola. Versione nuova.
 - **Gioele: issue #34 è la V49**: se la V50 viene unita prima, parte dalla V50 e prende il numero dopo (chi arriva secondo si aggiorna).
+- **V61 sul robot**: impronta `b3cd67fd37fd9603`. Davanti all'ostacolo: "Ingresso ANNULLATO: ... è l'OSTACOLO" invece di entrare;
+  sul bordo "Ostacolo: BORDO DELLA PISTA a ...". Il bordo vero non è ancora provato (solo simulatore + 2 immagini del 05/11 e 13/11):
+  se si ferma senza motivo `OST_BORDO = False`, o scegliere il lato con `OST_LATO_PREFERITO`. Se peggio: `ARGENTO_OGGETTO = False`.
+- **Modelli YOLO su GitHub** (prof, 26/11): non sono qui (stanno sul Raspberry); da caricare (4 x ~10 MB) in `Modelli_YOLO/`.
 - **V60 sul robot**: impronta `bdac1c5d365d28c1`. Sul muso: "SOLO RUOTE DAVANTI indietro al massimo" e "Di nuovo su quattro ruote con le
   ruote davanti"; nella cabina la riga "prove:". Se peggio: `IMPENNATA_ANTERIORI = False`. Luce (prof, 24/11: 2 LED potenti sul muso):
   da progettare insieme dopo le misure (3 run: luci normali, spente, torcia/sole) e le risposte su come sono collegati i LED.

@@ -4,7 +4,7 @@
 #  1) sceglie la cartella ~/ClaudeRob_V<n> con il numero PIÙ ALTO che contiene RwdFoto.py
 #     (oppure quella scritta nel file ~/ClaudeRob_FISSA, per restare su una versione: echo ClaudeRob_V43 > ~/ClaudeRob_FISSA;
 #      per tornare all'ultima: rm ~/ClaudeRob_FISSA);
-#  2) se mancano, ci copia i 4 modelli YOLO da /home/pi;
+#  2) se mancano o sono vuoti (26/11), ci copia i 4 modelli YOLO da /home/pi o dall'ultima versione che li ha buoni;
 #  3) rende eseguibile avvia.sh;
 #  4) sposta ~/ClaudeRob_GARA su quella cartella e fa partire il programma.
 #  Così, per una versione nuova, basta copiare la cartella sul robot (scp o FileZilla, come cartella) e riavviare.
@@ -38,14 +38,31 @@ if [ -z "$SCELTA" ]; then
     exit 1
 fi
 
+# (26/11) un modello è BUONO se model.ncnn.bin pesa più di 1 MB e model.ncnn.param più di 1 kB. Il 26/11 nella
+# ClaudeRob_V60 c'erano le cartelle dei modelli ma con i file a 0 byte (copia interrotta): YOLO dava
+# "IndexError: list index out of range" e prima lo script non se ne accorgeva (guardava solo se la cartella c'era).
+buono() { [ "$(stat -c %s "$1/model.ncnn.bin" 2>/dev/null || echo 0)" -gt 1000000 ] && \
+          [ "$(stat -c %s "$1/model.ncnn.param" 2>/dev/null || echo 0)" -gt 1000 ]; }
 for m in $MODELLI; do
-    if [ ! -d "$CASA/$SCELTA/$m" ]; then
-        if [ -d "$CASA/$m" ]; then
-            cp -r "$CASA/$m" "$CASA/$SCELTA/" && dici "Copiato il modello $m in $SCELTA"
-        else
-            dici "ATTENZIONE: manca il modello $m (né in $SCELTA né in $CASA)"
-        fi
+    if buono "$CASA/$SCELTA/$m"; then continue; fi
+    # da dove copiarlo: /home/pi, oppure la versione più recente che lo ha buono
+    SORGENTE=""
+    if buono "$CASA/$m"; then SORGENTE="$CASA/$m"; fi
+    if [ -z "$SORGENTE" ]; then
+        for d in $(ls -d ClaudeRob_V[0-9]* 2>/dev/null | grep -E '^ClaudeRob_V[0-9]+$' | sed 's/^ClaudeRob_V//' | sort -n -r); do
+            if [ "ClaudeRob_V$d" != "$SCELTA" ] && buono "$CASA/ClaudeRob_V$d/$m"; then SORGENTE="$CASA/ClaudeRob_V$d/$m"; break; fi
+        done
     fi
+    if [ -z "$SORGENTE" ]; then
+        dici "ATTENZIONE: il modello $m manca o è vuoto in $SCELTA e non ne trovo uno buono da copiare"
+        continue
+    fi
+    if [ -e "$CASA/$SCELTA/$m" ]; then           # quello rotto si sposta da parte (non si cancella niente)
+        ROTTI="$CASA/modelli_rotti_$(date +%Y%m%d_%H%M%S)"
+        mkdir -p "$ROTTI" && mv "$CASA/$SCELTA/$m" "$ROTTI/${SCELTA}_$m"
+        dici "Il modello $m in $SCELTA era VUOTO o incompleto: spostato in $ROTTI"
+    fi
+    cp -r "$SORGENTE" "$CASA/$SCELTA/" && dici "Copiato il modello $m in $SCELTA (da $SORGENTE)"
 done
 chmod +x "$CASA/$SCELTA/avvia.sh" 2>/dev/null
 
