@@ -1333,15 +1333,25 @@ def Spinge():
     return 0 < d <= RwdConf.OST_SPINTA_CM
 
 
-def AvantiOst(durata, rotta):
+def AvantiOst(durata, rotta, bordo=None):
     # [FIX 90] Come Rwd.Dritto(VelSl, durata) ma a passi di 0,1 s: se davanti c'è qualcosa a pochi cm si ferma,
     # arretra un poco e risponde False. Scatola nera 03/11 (V30), secondi 90-95: aggirando l'"ostacolo" il robot
     # ha spinto contro la parete per 5 s con il laser frontale a 4 cm e il muso che saliva (beccheggio 7).
+    # [FIX 148] bordo (dizionario, solo sul primo lato dell'ostacolo): a ogni passo guarda se la camera vede il bordo della
+    # pista (2 volte di fila); se sì si ferma, scrive in bordo["visto"] la frazione di bianco e in bordo["t"] quanto è
+    # avanzato, e risponde False. Senza bordo (None) tutto come prima.
     t0 = time.time()
     while time.time() - t0 < durata - 1e-3:
         if not Rwd.GetSwitch()['sw_sof']:          # switch spento: Dritto esce subito, qui girerebbe a vuoto
             Rwd.Stop()
             return False
+        if bordo is not None:
+            b = BordoPista()
+            bordo["di_fila"] = bordo["di_fila"] + 1 if b is not None else 0
+            if bordo["di_fila"] >= 2:
+                Rwd.Stop()
+                bordo["visto"], bordo["t"] = b, time.time() - t0
+                return False
         if Spinge():
             Rwd.Stop()
             print(f"Ostacolo: spingo contro qualcosa davanti ({Rwd.FrontaleFiltrato()} cm): mi fermo e arretro")
@@ -1534,21 +1544,14 @@ def OstAutDet(Verso=1): # Verso assume valori -1 e 1 e definisce il lato di agir
     # [FIX 27] 0,9 s invece di 0,5 s: quando il laser laterale supera il bordo dell'ostacolo
     # metà robot è ancora accanto al blocco. Con 0,5 s lo spigolo anteriore lo toccava
     # (margine di 0-5 cm, provato nel simulatore). Regolate questo tempo sul robot vero.
-    if getattr(RwdConf, "OST_BORDO", True):
-        # [FIX 148] anche questo pezzo va verso il bordo: a passi di 0,1 s, con il controllo della camera
-        t0_av = time.time()
-        while time.time() - t0_av < 0.9 - 1e-3:
-            b = BordoPista()
-            bordo_di_fila = bordo_di_fila + 1 if b is not None else 0
-            if bordo_di_fila >= 2:
-                LatoBordo[0], LatoBordo[1] = Verso, time.time()
-                print(f"Ostacolo: BORDO DELLA PISTA a {'sinistra' if Verso == 1 else 'destra'} (pavimento bianco solo "
-                      f"{b * 100:.0f}%): torno indietro e lo aggiro dall'altro lato")
-                return TornaIndietroOst(rotta0, t_lato + (time.time() - t0_av))
-            if not AvantiOst(0.1, rotta):
-                break
-    else:
-        AvantiOst(0.9, rotta)                       # [FIX 90] si ferma se spinge
+    # [FIX 148] anche questo pezzo va verso il bordo: AvantiOst controlla la camera a ogni passo
+    bordo = {"di_fila": bordo_di_fila, "t": 0.0} if getattr(RwdConf, "OST_BORDO", True) else None
+    AvantiOst(0.9, rotta, bordo)                    # [FIX 90] si ferma se spinge
+    if bordo is not None and bordo.get("visto") is not None:
+        LatoBordo[0], LatoBordo[1] = Verso, time.time()
+        print(f"Ostacolo: BORDO DELLA PISTA a {'sinistra' if Verso == 1 else 'destra'} (pavimento bianco solo "
+              f"{bordo['visto'] * 100:.0f}%): torno indietro e lo aggiro dall'altro lato")
+        return TornaIndietroOst(rotta0, t_lato + bordo["t"])
     Rwd.Stop()
     ##########################INIZIO OSTACOLO SECONDO GIRO
     rotta = RuotaOstacolo(rotta, 90 * Verso)          # [FIX 73]
