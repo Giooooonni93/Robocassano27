@@ -34,8 +34,17 @@ if ! git -C "$COPIA" fetch --quiet origin main; then
     read -r -p "Premi Invio per chiudere" _
     exit 1
 fi
-# la copia nascosta è solo uno specchio di GitHub: nessuno ci lavora, quindi si allinea sempre a main
-git -C "$COPIA" checkout --quiet -B main origin/main && git -C "$COPIA" reset --quiet --hard origin/main
+# la copia nascosta è solo uno specchio di GitHub: nessuno ci lavora, quindi si allinea sempre a main.
+# (26/11) -f: se nella copia ci sono file "estranei" con lo stesso nome di file nuovi di GitHub (successo con la
+# ClaudeRob_V60), git si rifiutava e lo script diceva "Già aggiornata". Ora li sostituisce con quelli di GitHub
+# (la copia nascosta non è la cartella di lavoro: 02_Robotica non si tocca) e, se qualcosa va storto, lo dice.
+if ! { git -C "$COPIA" checkout --quiet -f -B main origin/main && git -C "$COPIA" reset --quiet --hard origin/main; }; then
+    echo
+    echo "NON RIESCO AD ALLINEARE LA COPIA DI GITHUB ($COPIA). Non ho copiato niente in 02_Robotica."
+    echo "Manda a Claude le righe qui sopra."
+    read -r -p "Premi Invio per chiudere" _
+    exit 1
+fi
 
 python3 - "$COPIA" "$DEST" <<'EOF'
 import os, sys, shutil, subprocess, filecmp
