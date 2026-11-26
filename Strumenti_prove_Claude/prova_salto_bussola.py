@@ -18,7 +18,7 @@ SIM = max((os.path.join(QUI, "..", d) for d in os.listdir(os.path.join(QUI, ".."
            if d.startswith("ClaudeRob_Simulatore_V")), key=lambda d: int(d.rsplit("_V", 1)[1]))
 
 GARA = r'''
-import sys, json, math
+import sys, json, math, re
 sys.path.insert(0, sys.argv[1])
 import mondo, esegui
 st = {"salto": 0, "attesa": None, "n_log": 0, "salti": 0}
@@ -30,7 +30,7 @@ def aggiorna(self):
         return
     nuovi = self.log[st["n_log"]:]
     st["n_log"] = len(self.log)
-    if any("Incrocio con verde a SINISTRA" in m for _, m in nuovi):
+    if any(re.search(r"IA\s+Incrocio\s+Sx", m) for _, m in nuovi):   # la print del robot (in cabina: "verde a SINISTRA")
         st["attesa"] = self.h                      # svolta a sinistra cominciata: aspetto 22 gradi
     if st["attesa"] is not None and abs((self.h - st["attesa"] + 540) % 360 - 180) >= 22:
         st["attesa"] = None
