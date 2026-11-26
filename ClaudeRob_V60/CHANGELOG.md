@@ -104,7 +104,19 @@ partono i colpetti di prima. Interruttore `IMPENNATA_ANTERIORI`. Quando entra in
 (laser davanti a pochi cm e beccheggio sotto -35, FIX 125 e 129).
 
 **Prove.**
-PROVE_QUI
+- Sul muso (`prova_ruote_davanti.py ... 20 scuola 5 anteriori`: il simulatore tiene il robot a -65 gradi finché le due ruote
+  davanti non vanno indietro oltre il 70% con le dietro ferme per 0,8 s):
+  - V59 ancora sul muso dopo 15 s, poi fuori campo;
+  - V60 "SOLO RUOTE DAVANTI indietro al massimo", su quattro ruote dopo 1,3 s, arrivo. Anche con laser 0 e 40 cm.
+  - Con `avanti` (si libera solo in avanti) la V60, dopo le ruote davanti, passa ai colpetti di prima e si libera.
+- Cabina sulla scatola nera del 26/11 (moviola):
+  - a 0:30 "ALTALENA IN CORSO";
+  - a 0:45 "ALTALENA NON SUPERATA (LoP o bloccato) a 0:40";
+  - a 1:20 "ALTALENA SUPERATA a 1:10".
+- Ostacolo nel simulatore (pista `gara`): "OSTACOLO" → IN CORSO, "FINE OSTACOLO" → SUPERATO a 1:25.
+- Batteria 11 gare (scuola_nuova 1-3, scuola, rcj2026 1-2, lunga, contorto, gara, arena, arena_parete): **identica alla V59**
+  campione per campione (nelle piste del simulatore il robot non finisce mai sul muso).
+- `controlla_versione.py` e `confronta_simulatore.py`: OK.
 
 ## V59 – 24 novembre 2026
 
