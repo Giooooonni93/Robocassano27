@@ -113,7 +113,7 @@ Nella scatola nera c'è il campo nuovo `ard_info` (ok, secondi di silenzio, pacc
   - V63: "ARDUINO STACCATO", laser (0, 0, 0) e switch spento, porta riaperta dopo 1,0 s, dati di nuovo validi,
     StatoArduino "riconnessioni 1".
 - Cabina: le tre righe (OK 52/s, ZITTO 3s con riconnesso 1x, OK 51/s con riconnesso 1x).
-- Batteria: BATTERIA_QUI
+- Batteria: 11 gare **identiche alla V62** campione per campione. `controlla_versione.py` e `confronta_simulatore.py`: OK.
 
 **Codice dell'Arduino (`InoSensor.ino`).** Non è nel repository. Da controllare quando arriva:
 - `Wire.setWireTimeout` (senza, se il BNO055 o un VL53L1X si blocca sul bus I2C, l'Arduino si ferma per sempre);
