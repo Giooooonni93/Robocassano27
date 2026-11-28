@@ -290,7 +290,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - **V63** (28/11, issue #69) FIX 151: **Arduino staccato** ("[Errno 5] Input/output error" = OSError, o 3 errori in 2 s): dati a zero, switch
   spento (motori fermi), porta riaperta (`_riconnetti_arduino`, `ARDUINO_RICONNETTI`); prima dati vecchi per 45 s e robot alla cieca (26/11
   16:39). FIX 152: cabina "ARDUINO OK n/s" / "ARDUINO ZITTO n s" / "(riconnesso n x)", campo `ard_info`. Prova: `prova_arduino_staccato.py`.
-  `InoSensor.ino` non è nel repository: da chiedere al prof (Wire.setWireTimeout, watchdog, reinizializzazione del BNO055).
+  Sketch dell'Arduino in `Arduino/` (28/11): `InoSensorRobusto/` (del 21/10, mandato dal prof) e `InoSensorRobusto2/` (commenti
+  `[ARDUINO n]`: BNO055 che legge 0,0,0 per 0,5 s → riavvio; laser fermo 1 s → riavvio dei soli laser, max ogni 10 s; 9o valore =
+  riavvii dei sensori, nella scatola nera primo numero di `tilt`; watchdog spento, si accende solo col bootloader nuovo). Non compilato
+  qui (niente arduino-cli): "Verifica" nell'IDE. Da capire: InoSensorRobusto manda anche a switch spento, ma nelle scatole nere a
+  switch spento l'Arduino tace → forse sulla Nano c'è un altro sketch (prova in `Arduino/LEGGIMI.md`).
 ## Com'è andata sul robot vero
 - 12/11 10:09 (**V43**): percorso completo, 3 vittime, uscita in 10 s, altalena, linea rossa a 547 s; **8 LoP**, una sola scatola nera
   (FIX 108 ok). Errori: rotonda (gira 3 volte a destra), verdi in diagonale (riprende il ramo dritto, 2 volte), falso argento
